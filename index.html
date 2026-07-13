@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketplace AI Assistant</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <h1>Marketplace AI Assistant</h1>
+
+    <p>Crea annunci ottimizzati con l'Intelligenza Artificiale.</p>
+
+
+    <input id="marca" type="text" placeholder="Marca">
+
+    <input id="categoria" type="text" placeholder="Categoria">
+<input id="taglia" type="text" placeholder="Taglia">
+
+<input id="prezzo" type="text" placeholder="Prezzo (€)">
+
+<select id="condizioni">
+
+    <option value="">Seleziona condizioni</option>
+    <option value="Nuovo">Nuovo</option>
+    <option value="Come nuovo">Come nuovo</option>
+    <option value="Ottime condizioni">Ottime condizioni</option>
+    <option value="Buone condizioni">Buone condizioni</option>
+
+</select>
+
+<textarea id="descrizione" placeholder="Descrivi il prodotto"></textarea>
+
+    <button onclick="generaAnnuncio()">
+        Genera Annuncio
+    </button>
+
+
+    <div id="risultato"></div>
+
+
+</div>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
