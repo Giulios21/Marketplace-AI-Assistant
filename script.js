@@ -6,31 +6,47 @@ function generaAnnuncio() {
     let prezzo = document.querySelector("#prezzo").value;
     let condizioni = document.querySelector("#condizioni").value;
     let descrizione = document.querySelector("#descrizione").value;
+    let marketplace = document.querySelector("#marketplace").value;
+    
+    let titolo = "";
+    let testoGenerato = "";
+if (marketplace === "vinted") {
 
+    titolo = `${marca} ${categoria} | Taglia ${taglia}`;
+
+    testoGenerato = `
+🌸 ${categoria} ${marca} in ${condizioni.toLowerCase()}.
+
+${descrizione}
+
+📏 Taglia: ${taglia}
+
+💰 Prezzo: €${prezzo}
+
+✨ Spedizione veloce e massima disponibilità.
+Scrivimi pure se hai domande 😊
+`;
+
+}
 
     let risultato = `
+
+    
+
+
 
     <div class="scheda-annuncio">
 
         <h2>Anteprima Annuncio</h2>
 
-        <h3>${marca} ${categoria} | Taglia ${taglia} | ${condizioni}</h3>
+       <h3>${titolo}</h3>
 
 
-        <p id="testoAnnuncio">
+       <p id="testoAnnuncio">
 
-        Scopri questo/a ${categoria} firmato/a ${marca}, 
-        in ${condizioni.toLowerCase()}.
+    ${testoGenerato}
 
-        ${descrizione}
-
-        📏 Taglia: ${taglia}
-
-        💰 Prezzo: €${prezzo}
-
-        ⭐ Condizioni: ${condizioni}
-
-        </p>
+    </p>
 
 
         <button onclick="copiaAnnuncio()">
