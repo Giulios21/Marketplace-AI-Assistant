@@ -10,8 +10,39 @@ function generaAnnuncio() {
     
     let titolo = "";
     let testoGenerato = "";
+    let punteggioAI = 0;
+    let suggerimentiAI = [];
+    
 if (marketplace === "vinted") {
+if (marca !== "") {
+    punteggioAI += 2;
+} else {
+    suggerimentiAI.push("Inserisci la marca del prodotto.");
+}
 
+if (categoria !== "") {
+    punteggioAI += 2;
+} else {
+    suggerimentiAI.push("Inserisci la categoria.");
+}
+
+if (prezzo !== "") {
+    punteggioAI += 2;
+} else {
+    suggerimentiAI.push("Inserisci il prezzo.");
+}
+
+if (descrizione.length > 20) {
+    punteggioAI += 2;
+} else {
+    suggerimentiAI.push("Aggiungi una descrizione più dettagliata.");
+}
+
+if (condizioni !== "") {
+    punteggioAI += 2;
+} else {
+    suggerimentiAI.push("Inserisci le condizioni.");
+}
     titolo = `${marca} ${categoria} | Taglia ${taglia}`;
 
     testoGenerato = `
@@ -28,41 +59,52 @@ Scrivimi pure se hai domande 😊
 `;
 
 }
+let risultato = `
 
-    let risultato = `
+<div class="scheda-annuncio">
 
-    
+    <h2>✨ Anteprima Annuncio</h2>
 
+    <h3>${titolo}</h3>
 
+    <p id="testoAnnuncio">
 
-    <div class="scheda-annuncio">
-
-        <h2>Anteprima Annuncio</h2>
-
-       <h3>${titolo}</h3>
-
-
-       <p id="testoAnnuncio">
-
-    ${testoGenerato}
+${testoGenerato}
 
     </p>
 
+    <button onclick="copiaAnnuncio()">
+        📋 Copia Annuncio
+    </button>
 
-        <button onclick="copiaAnnuncio()">
-            Copia Annuncio
-        </button>
-
-
-    </div>
-
-    `;
+</div>
 
 
-    document.querySelector("#risultato").innerHTML = risultato;
+<div class="ai-card">
+
+    <h2>🤖 Analisi AI</h2>
+
+    <p><strong>Punteggio:</strong> 8/10 ⭐</p>
+
+   <p><strong>Punteggio:</strong> ${punteggioAI}/10 ⭐</p>
+   
+   <ul>
+
+        <li>✅ Titolo completo</li>
+
+        <li>✅ Prezzo presente</li>
+
+        <li>${suggerimentiAI.length > 0 ? suggerimentiAI.join("<br>") : "✅ Annuncio completo, ottimo lavoro!"}</li>
+
+    </ul>
+
+</div>
+
+`;
+
+document.querySelector("#risultato").innerHTML = risultato;
 
 }
-
 
 
 function copiaAnnuncio() {
@@ -91,5 +133,4 @@ function mostraMessaggio() {
         messaggio.remove();
 
     }, 3000);
-
 }
