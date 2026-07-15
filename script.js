@@ -65,26 +65,60 @@ let risultato = `
 
     <h2>✨ Anteprima Annuncio</h2>
 
-    <h3>${titolo}</h3>
 
-    <p id="testoAnnuncio">
+    <h3>📦 Titolo</h3>
+
+    <div class="campo-output">
+
+        <p id="titoloAnnuncio">${titolo}</p>
+
+        <button onclick="copiaTesto('#titoloAnnuncio')">
+            📋 Copia Titolo
+        </button>
+
+    </div>
+
+
+    <h3>📝 Descrizione</h3>
+
+    <div class="campo-output">
+
+        <p id="testoAnnuncio">
 
 ${testoGenerato}
 
-    </p>
+        </p>
 
-    <button onclick="copiaAnnuncio()">
-        📋 Copia Annuncio
-    </button>
+        <button onclick="copiaTesto('#testoAnnuncio')">
+            📋 Copia Descrizione
+        </button>
 
-</div>
+    </div>
+
+
+    <h3>💰 Prezzo</h3>
+
+    <div class="campo-output">
+
+        <p id="prezzoAnnuncio">
+            €${prezzo}
+        </p>
+
+        <button onclick="copiaTesto('#prezzoAnnuncio')">
+            📋 Copia Prezzo
+        </button>
+        <br><br>
+
+<button onclick="copiaAnnuncioCompleto()">
+    🚀 Copia Annuncio Completo
+</button>
+
+    </div>
 
 
 <div class="ai-card">
 
     <h2>🤖 Analisi AI</h2>
-
-    <p><strong>Punteggio:</strong> 8/10 ⭐</p>
 
    <p><strong>Punteggio:</strong> ${punteggioAI}/10 ⭐</p>
    
@@ -106,6 +140,16 @@ document.querySelector("#risultato").innerHTML = risultato;
 
 }
 
+function copiaTitolo() {
+
+    let titolo = document.querySelector("#titoloAnnuncio").innerText;
+
+    navigator.clipboard.writeText(titolo);
+
+    mostraMessaggio();
+
+}
+
 
 function copiaAnnuncio() {
 
@@ -117,11 +161,38 @@ function copiaAnnuncio() {
 
 }
 
+function copiaTesto(idElemento) {
+
+    let elemento = document.querySelector(idElemento);
+
+    if (!elemento) {
+        console.log("Elemento non trovato:", idElemento);
+        return;
+    }
+
+    let testo = elemento.innerText;
+
+    navigator.clipboard.writeText(testo)
+        .then(() => {
+
+            console.log("Copiato:", testo);
+
+            mostraMessaggio();
+
+        })
+        .catch((errore) => {
+
+            console.log("Errore copia:", errore);
+
+        });
+
+}
+
 function mostraMessaggio() {
 
     let messaggio = document.createElement("div");
 
-    messaggio.innerHTML = "✅ Annuncio copiato negli appunti!";
+    messaggio.innerHTML = "✅ Copiato negli appunti!";
 
     messaggio.className = "messaggio-copia";
 
@@ -133,4 +204,33 @@ function mostraMessaggio() {
         messaggio.remove();
 
     }, 3000);
+
+}
+function copiaAnnuncioCompleto() {
+
+    let titolo = document.querySelector("#titoloAnnuncio").innerText;
+
+    let descrizione = document.querySelector("#testoAnnuncio").innerText;
+
+    let prezzo = document.querySelector("#prezzoAnnuncio").innerText;
+
+
+    let testoCompleto = 
+`Titolo:
+${titolo}
+
+Descrizione:
+${descrizione}
+
+Prezzo:
+${prezzo}`;
+
+
+    navigator.clipboard.writeText(testoCompleto)
+    .then(() => {
+
+        mostraMessaggio();
+
+    });
+
 }
