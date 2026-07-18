@@ -1,153 +1,16 @@
 body {
-
     font-family: Arial, sans-serif;
-
     color: #1f2937;
-
     margin: 0;
-
     padding: 40px;
-
     display: flex;
-
     justify-content: center;
-
+    background: #f5f7fb;
 }
+
 .container {
 
     background: white;
-
-    max-width: 600px;
-
-    width: 100%;
-
-    padding: 25px;
-
-    border-radius: 20px;
-
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-
-}
-h1 {
-    text-align: center;
-    color: #2c3e50;
-}
-
-p {
-    text-align: center;
-    color: #555;
-    margin-bottom: 25px;
-}
-
-input,
-textarea,
-select {
-
-    width: 100%;
-
-    padding: 12px 15px;
-
-    margin-top: 8px;
-
-    margin-bottom: 12px;
-
-    border: 1px solid #d1d5db;
-
-    border-radius: 12px;
-
-    font-size: 15px;
-
-    box-sizing: border-box;
-
-    background: #ffffff;
-
-    transition: 0.3s;
-
-}
-button {
-
-background: linear-gradient(135deg, #667eea, #764ba2);
-
-color: white;
-
-border: none;
-
-padding: 14px 25px;
-
-border-radius: 12px;
-
-font-size: 16px;
-
-cursor: pointer;
-
-transition: 0.3s;
-
-}
-
-
-button:hover {
-
-transform: translateY(-2px);
-
-opacity: 0.9;
-
-}
-
-
-
-
-#risultato {
-    margin-top: 20px;
-    width: 100%;
-}
-
-.scheda-annuncio {
-    display: block;
-    width: 100%;
-    margin-top: 20px;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-}
-
-.scheda-annuncio h2,
-.scheda-annuncio h3,
-.scheda-annuncio p {
-    display: block;
-    margin-bottom: 15px;
-}
-
-.scheda-annuncio p {
-    text-align: left;
-    color: #555;
-}
-.messaggio-copia {
-
-    position: fixed;
-
-    bottom: 30px;
-
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    background: #28a745;
-
-    color: white;
-
-    padding: 15px 25px;
-
-    border-radius: 8px;
-
-    font-size: 16px;
-
-}
-
-.container {
-
-    background: transparent;
 
     max-width: 600px;
 
@@ -159,75 +22,187 @@ opacity: 0.9;
 
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 
+    box-sizing: border-box;
+
 }
 
+/* HEADER */
+
 .header {
-
     text-align: center;
-
     margin-bottom: 25px;
+}
 
+
+.logo {
+    width: 120px;
+    height: auto;
+    display: block;
+    margin: 0 auto 10px;
 }
 
 
 .header h1 {
-
     font-size: 32px;
-
     margin-bottom: 10px;
-
     color: #1f2937;
+}
 
+
+p {
+    color: #555;
+    margin-bottom: 25px;
 }
 
 
 .header p {
-
     color: #6b7280;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+
+/* BADGE */
+
+.badge {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: #eef2ff;
+    color: #667eea;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+/* FORM */
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 600;
+}
+
+
+input,
+textarea,
+select {
+
+    width: 100%;
+    padding: 12px 15px;
+
+    margin-top: 8px;
+    margin-bottom: 12px;
+
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+
+    font-size: 15px;
+
+    box-sizing: border-box;
+    background: white;
+
+}
+
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+
+/* BOTTONI */
+
+button {
+
+    background: linear-gradient(135deg, #667eea, #764ba2);
+
+    color: white;
+
+    border: none;
+
+    padding: 14px 25px;
+
+    border-radius: 12px;
 
     font-size: 16px;
 
-    line-height: 1.5;
+    cursor: pointer;
+
+    transition: 0.3s;
 
 }
 
 
-.badge {
+button:hover {
 
-    display: inline-block;
-
-    margin-top: 12px;
-
-    padding: 6px 14px;
-
-    border-radius: 20px;
-
-    background: #eef2ff;
-
-    color: #667eea;
-
-    font-size: 14px;
-
-    font-weight: bold;
+    transform: translateY(-2px);
+    opacity: 0.9;
 
 }
-.preview-card {
+
+
+
+/* FOTO */
+
+#foto {
+
+    width: 100%;
+
+    margin-top: 8px;
+
+    margin-bottom: 15px;
+
+    padding: 10px;
+
+    border: 2px dashed #d1d5db;
+
+    border-radius: 12px;
+
+    background: #f9fafb;
+
+}
+
+
+#anteprima-foto {
+
+    margin-top: 15px;
+
+    text-align: center;
+
+}
+
+
+#anteprima-foto img {
+
+    max-width: 100%;
+
+    max-height: 300px;
+
+    border-radius: 12px;
+
+}
+
+
+
+/* RISULTATO */
+
+#risultato {
 
     margin-top: 30px;
 
     width: 100%;
-    
-    max-width: 600px;
-    
-    margin-left: auto;
-    
-    margin-right: auto; 
 
-    transform: translateX(-24px);
+}
 
-    box-sizing: border-box;
 
-    background: #ffffff;
+.preview-card {
+    transform: translateX(-23px);
+
+    width: 100%;
+
+    background: white;
 
     padding: 25px;
 
@@ -235,59 +210,87 @@ opacity: 0.9;
 
     box-shadow: 0 8px 25px rgba(0,0,0,0.06);
 
+    box-sizing: border-box;
+
 }
+
 
 .preview-card h2 {
 
     margin-top: 0;
 
-    font-size: 22px;
+}
 
-    color: #1f2937;
+
+
+/* ANNUNCIO */
+
+.scheda-annuncio {
+
+    width: 100%;
 
 }
 
-.ai-card{
 
-    margin-top:20px;
+.scheda-annuncio p {
 
-    background:#f8fafc;
+    text-align: left;
 
-    border-left:5px solid #667eea;
-
-    border-radius:16px;
-
-    padding:20px;
-
-    box-shadow:0 5px 15px rgba(0,0,0,.05);
+    color: #555;
 
 }
 
-.ai-card h2{
 
-    margin-top:0;
+
+.campo-output {
+
+    background: #f8fafc;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 12px;
+
+    padding: 15px;
+
+    margin-bottom: 20px;
+
+}
+
+
+
+/* AI */
+
+.ai-card {
+
+    margin-top: 20px;
+
+    background: #f8fafc;
+
+    border-left: 5px solid #667eea;
+
+    border-radius: 16px;
+
+    padding: 20px;
 
 }
 
-.ai-card ul{
 
-    padding-left:20px;
+.ai-card h2 {
+
+    margin-top: 0;
+
+}
+
+
+.ai-card ul {
+
+    padding-left: 20px;
 
 }
 
-.campo-output{
 
-    background:#f8fafc;
 
-    border:1px solid #e5e7eb;
-
-    border-radius:12px;
-
-    padding:15px;
-
-    margin-bottom:20px;
-
-}
+/* MESSAGGIO COPIA */
 
 .messaggio-copia {
 
@@ -313,20 +316,30 @@ opacity: 0.9;
 
 }
 
-.logo {
-    width: 120px;
-    height: auto;
-    display: block;
-    margin: 0 auto 10px;
-}
-
-.header {
+.foto-annuncio {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.logo {
-    width: 120px;
-    height: auto;
-    margin-bottom: 10px;
+.foto-annuncio img {
+    max-width: 100%;
+    max-height: 350px;
+    border-radius: 15px;
+    object-fit: cover;
+}
+
+#cronologia {
+    margin-top: 45px;
+    width: 100%;
+    max-width: 600px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    box-sizing: border-box;
+}
+
+#cronologia h2 {
+    margin-top: 0;
+    color: #1f2937;
 }

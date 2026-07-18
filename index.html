@@ -44,9 +44,8 @@
     <label for="categoria">Categoria</label>
     <input type="text" id="categoria" placeholder="Es. Scarpe uomo">
 
-
-    <label for="taglia">Taglia</label>
-    <input type="text" id="taglia" placeholder="Es. 42">
+   <label for="dettagli">Taglia / Dettagli prodotto</label>
+   <input type="text" id="dettagli" placeholder="Es. Taglia 42, colore nero, 128GB...">
 
 
     <label for="prezzo">Prezzo</label>
@@ -59,6 +58,11 @@
 
     <label for="descrizione">Descrizione aggiuntiva</label>
     <textarea id="descrizione" placeholder="Inserisci dettagli del prodotto"></textarea>
+    <label for="foto">Foto prodotto</label>
+
+    <input type="file" id="foto" accept="image/*">
+
+    <div id="anteprima-foto"></div>
 
 
     <button onclick="generaAnnuncio()">
@@ -73,6 +77,10 @@
     <div id="anteprima">
 
     </div>
+    
+    <div id="cronologia">
+    <h2>📚 Cronologia annunci</h2>
+    </div>
 
     <button onclick="copiaAnnuncio()">
         📋 Copia Annuncio
@@ -81,7 +89,7 @@
 </div>
 
 
-</div>
+
 
 
 <script src="script.js"></script>
