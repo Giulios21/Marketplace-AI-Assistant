@@ -451,22 +451,40 @@ function mostraCronologia() {
 
     contenitore.innerHTML = "<h2>📚 Cronologia annunci</h2>";
 
-    annunci.reverse().forEach(annuncio => {
+   annunci.reverse().forEach((annuncio, index) => {
 
-        contenitore.innerHTML += `
-        <div class="campo-output">
+      contenitore.innerHTML += `
+<div class="campo-output">
 
-            <h3>${annuncio.titolo}</h3>
+    <h3>${annuncio.titolo}</h3>
 
-            <p>${annuncio.marketplace} - €${annuncio.prezzo}</p>
+    <p>${annuncio.marketplace} • €${annuncio.prezzo}</p>
 
-            <small>${annuncio.data}</small>
+    <small>${annuncio.data}</small>
 
-        </div>
-        `;
+    <br><br>
+
+    <button onclick="eliminaAnnuncio(${annunci.length - 1 - index})">
+        🗑️ Elimina
+    </button>
+
+</div>
+`;
 
     });
 
 }
 
 mostraCronologia();
+
+function eliminaAnnuncio(indice) {
+
+    let annunci = JSON.parse(localStorage.getItem("annunci")) || [];
+
+    annunci.splice(indice, 1);
+
+    localStorage.setItem("annunci", JSON.stringify(annunci));
+
+    mostraCronologia();
+
+}
