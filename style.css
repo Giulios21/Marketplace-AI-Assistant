@@ -20,6 +20,8 @@ body {
 
     border-radius: 20px;
 
+    border: 2px solid #a78bfa;
+
     box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 
     box-sizing: border-box;
@@ -95,7 +97,7 @@ select {
     margin-top: 8px;
     margin-bottom: 12px;
 
-    border: 1px solid #d1d5db;
+    border: 1px solid #ddd6fe;
     border-radius: 12px;
 
     font-size: 15px;
@@ -196,7 +198,6 @@ button:hover {
 
 }
 
-
 .preview-card {
     transform: translateX(-23px);
 
@@ -208,10 +209,11 @@ button:hover {
 
     border-radius: 18px;
 
+    border: 2px solid #a78bfa;
+
     box-shadow: 0 8px 25px rgba(0,0,0,0.06);
 
     box-sizing: border-box;
-
 }
 
 
@@ -342,4 +344,21 @@ button:hover {
 #cronologia h2 {
     margin-top: 0;
     color: #1f2937;
+}
+
+.sezione-anteprima,
+.sezione-cronologia {
+    margin-top: 40px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+
+    outline: none;
+
+    border-color: #a78bfa;
+
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.25);
+
 }

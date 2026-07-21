@@ -84,7 +84,17 @@ function generaAnnuncio() {
 
 ultimoAnnuncio = testoGenerato;
 
-salvaAnnuncio(titolo, testoGenerato, prezzo, marketplace);
+salvaAnnuncio(
+    marca,
+    categoria,
+    dettagli,
+    condizioni,
+    descrizione,
+    prezzo,
+    marketplace,
+    titolo,
+    testoGenerato
+);
 
 
     let risultato = `
@@ -423,23 +433,42 @@ function generaFraseAI(categoria) {
 
 }
 
-function salvaAnnuncio(titolo, descrizione, prezzo, marketplace) {
+function salvaAnnuncio(
+    marca,
+    categoria,
+    dettagli,
+    condizioni,
+    descrizione,
+    prezzo,
+    marketplace,
+    titolo,
+    testoGenerato
+) {
 
     let annunci = JSON.parse(localStorage.getItem("annunci")) || [];
 
     annunci.push({
-        titolo: titolo,
+
+        marca: marca,
+        categoria: categoria,
+        dettagli: dettagli,
+        condizioni: condizioni,
         descrizione: descrizione,
         prezzo: prezzo,
         marketplace: marketplace,
+
+        titolo: titolo,
+        testoGenerato: testoGenerato,
+
         data: new Date().toLocaleDateString()
+
     });
 
     localStorage.setItem("annunci", JSON.stringify(annunci));
 
     mostraCronologia();
-}
 
+}
 
 function mostraCronologia() {
 
@@ -463,10 +492,13 @@ function mostraCronologia() {
     <small>${annuncio.data}</small>
 
     <br><br>
+<button onclick="ricaricaAnnuncio(${annunci.length - 1 - index})">
+🔄 Ricarica
+</button>
 
-    <button onclick="eliminaAnnuncio(${annunci.length - 1 - index})">
-        🗑️ Elimina
-    </button>
+<button onclick="eliminaAnnuncio(${annunci.length - 1 - index})">
+🗑️ Elimina
+</button>
 
 </div>
 `;
@@ -486,5 +518,23 @@ function eliminaAnnuncio(indice) {
     localStorage.setItem("annunci", JSON.stringify(annunci));
 
     mostraCronologia();
+
+}
+
+function ricaricaAnnuncio(indice) {
+
+    let annunci = JSON.parse(localStorage.getItem("annunci")) || [];
+
+    let annuncio = annunci[indice];
+
+    if (!annuncio) return;
+
+    document.querySelector("#marca").value = annuncio.marca;
+    document.querySelector("#categoria").value = annuncio.categoria;
+    document.querySelector("#dettagli").value = annuncio.dettagli;
+    document.querySelector("#condizioni").value = annuncio.condizioni;
+    document.querySelector("#descrizione").value = annuncio.descrizione;
+    document.querySelector("#prezzo").value = annuncio.prezzo;
+    document.querySelector("#marketplace").value = annuncio.marketplace;
 
 }
