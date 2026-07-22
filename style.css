@@ -362,3 +362,24 @@ select:focus {
     box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.25);
 
 }
+
+.scheda-annuncio {
+    animation: entrataAnnuncio 0.6s ease;
+}
+
+
+@keyframes entrataAnnuncio {
+
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+        box-shadow: 0 0 0 rgba(0,0,0,0);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+}

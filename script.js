@@ -2,18 +2,16 @@ let ultimoAnnuncio = "";
 
 function generaAnnuncio() {
 
-    let marca = document.querySelector("#marca").value.trim();
-    let categoria = document.querySelector("#categoria").value.trim();
-    let dettagli = document.querySelector("#dettagli").value.trim();
-    let prezzo = document.querySelector("#prezzo").value.trim();
-    let condizioni = document.querySelector("#condizioni").value.trim();
+    let prodotto = document.querySelector("#prodotto").value.trim();
     let descrizione = document.querySelector("#descrizione").value.trim();
     let marketplace = document.querySelector("#marketplace").value;
-    let fotoInput = document.querySelector("#foto");
-    let foto = fotoInput.files.length;
+
+    let fotoInputAnnuncio = document.querySelector("#foto");
+    let foto = fotoInputAnnuncio.files.length;
 
     let titolo = "";
     let testoGenerato = "";
+
     let punteggioAI = 0;
     let suggerimentiAI = [];
 
@@ -21,42 +19,35 @@ function generaAnnuncio() {
     // ANALISI AI
 
     if (descrizione.length > 20) {
+
         punteggioAI += 4;
+
     } else {
+
         suggerimentiAI.push("Aggiungi una descrizione più dettagliata.");
+
     }
 
 
-    if (condizioni !== "") {
+    if (prodotto !== "") {
+
         punteggioAI += 3;
+
     } else {
-        suggerimentiAI.push("Specifica lo stato del prodotto.");
+
+        suggerimentiAI.push("Inserisci il prodotto da vendere.");
+
     }
 
-
-    if (marca !== "" && categoria !== "") {
-        punteggioAI += 3;
-    } else {
-        suggerimentiAI.push("Aggiungi marca e categoria per rendere il titolo più chiaro.");
-    }
-
-
-    if (prezzo !== "") {
-        punteggioAI += 1;
-    } else {
-        suggerimentiAI.push("Inserisci un prezzo per aiutare l'acquirente.");
-    }
-
-     if (dettagli !== "") {
-    punteggioAI += 1;
-} else {
-    suggerimentiAI.push("Aggiungi dettagli sul prodotto.");
-}
 
     if (foto > 0) {
+
         punteggioAI += 2;
+
     } else {
+
         suggerimentiAI.push("Aggiungi una foto del prodotto per migliorare l'annuncio.");
+
     }
 
 
@@ -64,99 +55,127 @@ function generaAnnuncio() {
 
 
 
-    titolo = `${marca} ${categoria}`.trim();
+    // GENERAZIONE TITOLO
+
+    titolo = generaTitoloAI(prodotto);
 
 
 
-   if (marketplace === "vinted") {
+    // GENERAZIONE ANNUNCIO IN BASE AL MARKETPLACE
 
-    testoGenerato = generaVinted(titolo, descrizione,dettagli, prezzo);
+    if (marketplace === "vinted") {
 
-} else if (marketplace === "subito") {
+        testoGenerato = generaVinted(
+            titolo,
+            descrizione,
+            prodotto
+        );
 
-    testoGenerato = generaSubito(titolo, descrizione, dettagli, prezzo);
 
-} else {
+    } else if (marketplace === "subito") {
 
-    testoGenerato = generaEbay(titolo, descrizione, dettagli, prezzo);
+        testoGenerato = generaSubito(
+            titolo,
+            descrizione,
+            prodotto
+        );
 
-}
 
-ultimoAnnuncio = testoGenerato;
+    } else {
 
-salvaAnnuncio(
-    marca,
-    categoria,
-    dettagli,
-    condizioni,
-    descrizione,
-    prezzo,
-    marketplace,
-    titolo,
-    testoGenerato
-);
+        testoGenerato = generaEbay(
+            titolo,
+            descrizione,
+            prodotto
+        );
+
+    }
+
+
+
+    ultimoAnnuncio = testoGenerato;
+
+
+
+    salvaAnnuncio(
+        prodotto,
+        descrizione,
+        marketplace,
+        titolo,
+        testoGenerato
+    );
+
+
 
 
     let risultato = `
 
 <div class="scheda-annuncio">
 
+
 <h2>✨ Anteprima Annuncio</h2>
 
+
+
 ${foto > 0 ? `
+
 <div class="foto-annuncio">
-    <img src="${URL.createObjectURL(fotoInput.files[0])}">
+
+<img src="${URL.createObjectURL(fotoInputAnnuncio.files[0])}">
+
 </div>
+
 ` : ""}
 
+
+
+
 <h3>📦 Titolo</h3>
+
 
 <div class="campo-output">
 
 <p id="titoloAnnuncio">${titolo}</p>
 
+
 <button onclick="copiaTesto('#titoloAnnuncio')">
+
 📋 Copia Titolo
+
 </button>
 
+
 </div>
+
 
 
 
 <h3>📝 Descrizione</h3>
 
+
 <div class="campo-output">
 
 <p id="testoAnnuncio">${testoGenerato}</p>
 
+
 <button onclick="copiaTesto('#testoAnnuncio')">
+
 📋 Copia Descrizione
+
 </button>
+
 
 </div>
 
 
-
-<h3>💰 Prezzo</h3>
-
-<div class="campo-output">
-
-<p id="prezzoAnnuncio">
-€${prezzo}
-</p>
-
-
-<button onclick="copiaTesto('#prezzoAnnuncio')">
-📋 Copia Prezzo
-</button>
-
-
-<br><br>
 
 
 <button onclick="copiaAnnuncioCompleto()">
+
 🚀 Copia Annuncio Completo
+
 </button>
+
 
 
 </div>
@@ -164,14 +183,15 @@ ${foto > 0 ? `
 
 
 
-<div class="ai-card">
 
-<h2>🤖 Analisi AI</h2>
-
+<div class="analisi-ai">
 
 <p>
+
 <strong>Punteggio:</strong> ${punteggioAI}/10 ⭐
+
 </p>
+
 
 
 <ul>
@@ -182,16 +202,17 @@ ${foto > 0 ? `
 
 
 <li>
-${suggerimentiAI.length > 0 
+
+${suggerimentiAI.length > 0
+
 ? suggerimentiAI.map(s => "⚠️ " + s).join("<br>")
+
 : "✅ Annuncio completo, ottimo lavoro!"}
+
 </li>
 
 
 </ul>
-
-
-</div>
 
 
 </div>
@@ -202,12 +223,8 @@ ${suggerimentiAI.length > 0
 
 document.querySelector("#risultato").innerHTML = risultato;
 
+
 }
-
-
-
-
-// COPIA TESTO
 
 function copiaTesto(idElemento) {
 
@@ -229,15 +246,12 @@ function copiaTesto(idElemento) {
 
 
 
-
 function copiaAnnuncioCompleto() {
 
 
     let titolo = document.querySelector("#titoloAnnuncio").innerText;
 
     let descrizione = document.querySelector("#testoAnnuncio").innerText;
-
-    let prezzo = document.querySelector("#prezzoAnnuncio").innerText;
 
 
 
@@ -246,10 +260,7 @@ function copiaAnnuncioCompleto() {
 ${titolo}
 
 Descrizione:
-${descrizione}
-
-Prezzo:
-${prezzo}`;
+${descrizione}`;
 
 
 
@@ -262,7 +273,6 @@ ${prezzo}`;
 
 
 }
-
 
 
 
@@ -305,236 +315,441 @@ const anteprima = document.getElementById("anteprima-foto");
 if (fotoInput) {
 
 
-fotoInput.addEventListener("change", function () {
+    fotoInput.addEventListener("change", function () {
 
 
-    const file = this.files[0];
+        const file = this.files[0];
 
 
-    if (!file) {
+        if (!file) {
 
-        anteprima.innerHTML = "";
+            anteprima.innerHTML = "";
 
-        return;
+            return;
 
-    }
-
-
-    const reader = new FileReader();
+        }
 
 
-    reader.onload = function(e) {
-
-        anteprima.innerHTML =
-        `<img src="${e.target.result}" alt="Anteprima prodotto">`;
-
-    };
+        const reader = new FileReader();
 
 
-    reader.readAsDataURL(file);
+        reader.onload = function(e) {
+
+            anteprima.innerHTML =
+            `<img src="${e.target.result}" alt="Anteprima prodotto">`;
+
+        };
 
 
-});
+        reader.readAsDataURL(file);
+
+
+    });
 
 
 }
 
-function generaVinted(titolo, descrizione, dettagli, prezzo) {
-    
-    let fraseAI = generaFraseAI(titolo)
+
+
+
+function generaVinted(titolo, descrizione, prodotto) {
+
+
+    let fraseAI = generaFraseAI(prodotto);
+
+
     return `
+
 ✨ ${titolo}
+
 
 ${descrizione}
 
+
 ${fraseAI}
 
-📌 Dettagli: ${dettagli}
 
+📌 Prodotto: ${prodotto}
 
-💰 Prezzo: €${prezzo}
 
 📦 Spedizione disponibile tramite Vinted.
+
 💬 Scrivimi pure per qualsiasi informazione 😊
+
 `;
 
 }
 
-function generaSubito(titolo, descrizione,dettagli, prezzo ) {
-    
-    let fraseAI = generaFraseAI(titolo);
+
+
+
+function generaSubito(titolo, descrizione, prodotto) {
+
+
+    let fraseAI = generaFraseAI(prodotto);
 
 
     return `
+
 📢 ${titolo}
+
 
 ${descrizione}
 
+
 ${fraseAI}
 
-📌 Dettagli: ${dettagli}
 
-💰 Prezzo richiesto: €${prezzo}
+📌 Prodotto: ${prodotto}
+
 
 🚚 Possibilità di spedizione o consegna a mano.
 
+
 📩 Contattami per qualsiasi informazione.
+
 `;
 
 }
 
-function generaEbay(titolo, descrizione, dettagli, prezzo) {
-    
-    let fraseAI = generaFraseAI(titolo);
+
+
+
+function generaEbay(titolo, descrizione, prodotto) {
+
+
+    let fraseAI = generaFraseAI(prodotto);
+
 
     return `
+
 🏷️ ${titolo}
+
 
 ${descrizione}
 
+
 ${fraseAI}
 
-📌 Dettagli: ${dettagli}
 
-💰 Price: €${prezzo}
+📌 Prodotto: ${prodotto}
+
 
 📦 Accurate packaging and fast shipping.
 
+
 ⭐ Feel free to contact me for any questions.
+
 `;
 
 }
 
-function generaFraseAI(categoria) {
 
-    categoria = categoria.toLowerCase();
 
-    if (categoria.includes("scarpa")) {
+
+function generaFraseAI(prodotto) {
+
+
+    prodotto = prodotto.toLowerCase();
+
+
+
+    if (prodotto.includes("scarpa") || prodotto.includes("sneaker")) {
+
         return "👟 Ideali per un utilizzo quotidiano, comode e curate nei dettagli.";
+
     }
 
-    if (categoria.includes("iphone") || categoria.includes("telefono") || categoria.includes("smartphone")) {
+
+
+    if (prodotto.includes("iphone") || prodotto.includes("telefono") || prodotto.includes("smartphone")) {
+
         return "📱 Perfettamente funzionante e pronto all'utilizzo.";
+
     }
 
-    if (categoria.includes("playstation") || categoria.includes("xbox") || categoria.includes("console")) {
+
+
+    if (prodotto.includes("playstation") || prodotto.includes("xbox") || prodotto.includes("console")) {
+
         return "🎮 Perfetta per il gaming, pronta per essere utilizzata.";
+
     }
 
-    if (categoria.includes("felpa") || categoria.includes("maglia") || categoria.includes("giacca")) {
+
+
+    if (prodotto.includes("felpa") || prodotto.includes("maglia") || prodotto.includes("giacca")) {
+
         return "👕 Capo versatile e facile da abbinare.";
+
     }
 
-    if (categoria.includes("orologio")) {
+
+
+    if (prodotto.includes("orologio")) {
+
         return "⌚ Elegante e adatto ad ogni occasione.";
+
     }
+
+
 
     return "✅ Prodotto tenuto con cura e pronto per un nuovo proprietario.";
 
 }
 
 function salvaAnnuncio(
-    marca,
-    categoria,
-    dettagli,
-    condizioni,
+    prodotto,
     descrizione,
-    prezzo,
     marketplace,
     titolo,
     testoGenerato
 ) {
 
+
     let annunci = JSON.parse(localStorage.getItem("annunci")) || [];
+
 
     annunci.push({
 
-        marca: marca,
-        categoria: categoria,
-        dettagli: dettagli,
-        condizioni: condizioni,
+        prodotto: prodotto,
+
         descrizione: descrizione,
-        prezzo: prezzo,
+
         marketplace: marketplace,
 
         titolo: titolo,
+
         testoGenerato: testoGenerato,
 
         data: new Date().toLocaleDateString()
 
     });
 
-    localStorage.setItem("annunci", JSON.stringify(annunci));
+
+
+    localStorage.setItem(
+        "annunci",
+        JSON.stringify(annunci)
+    );
+
+
 
     mostraCronologia();
 
 }
+
+
+
+
 
 function mostraCronologia() {
 
+
     let contenitore = document.querySelector("#cronologia");
+
 
     if (!contenitore) return;
 
+
+
     let annunci = JSON.parse(localStorage.getItem("annunci")) || [];
+
+
 
     contenitore.innerHTML = "<h2>📚 Cronologia annunci</h2>";
 
-   annunci.reverse().forEach((annuncio, index) => {
 
-      contenitore.innerHTML += `
+
+
+    annunci.reverse().forEach((annuncio, index) => {
+
+
+
+        contenitore.innerHTML += `
+
+
 <div class="campo-output">
 
-    <h3>${annuncio.titolo}</h3>
 
-    <p>${annuncio.marketplace} • €${annuncio.prezzo}</p>
+<h3>${annuncio.titolo}</h3>
 
-    <small>${annuncio.data}</small>
 
-    <br><br>
+<p>${annuncio.marketplace}</p>
+
+
+<small>${annuncio.data}</small>
+
+
+<br><br>
+
+
+
 <button onclick="ricaricaAnnuncio(${annunci.length - 1 - index})">
+
 🔄 Ricarica
+
 </button>
+
+
+
 
 <button onclick="eliminaAnnuncio(${annunci.length - 1 - index})">
+
 🗑️ Elimina
+
 </button>
 
+
+
 </div>
+
+
 `;
+
+
 
     });
 
+
+
 }
+
+
+
 
 mostraCronologia();
 
+
+
+
+
+
 function eliminaAnnuncio(indice) {
 
+
     let annunci = JSON.parse(localStorage.getItem("annunci")) || [];
+
+
 
     annunci.splice(indice, 1);
 
-    localStorage.setItem("annunci", JSON.stringify(annunci));
+
+
+    localStorage.setItem(
+
+        "annunci",
+
+        JSON.stringify(annunci)
+
+    );
+
+
 
     mostraCronologia();
 
+
 }
+
+
+
+
+
 
 function ricaricaAnnuncio(indice) {
 
+
     let annunci = JSON.parse(localStorage.getItem("annunci")) || [];
+
+
 
     let annuncio = annunci[indice];
 
+
+
     if (!annuncio) return;
 
-    document.querySelector("#marca").value = annuncio.marca;
-    document.querySelector("#categoria").value = annuncio.categoria;
-    document.querySelector("#dettagli").value = annuncio.dettagli;
-    document.querySelector("#condizioni").value = annuncio.condizioni;
+
+
+
+    document.querySelector("#prodotto").value = annuncio.prodotto;
+
+
+
     document.querySelector("#descrizione").value = annuncio.descrizione;
-    document.querySelector("#prezzo").value = annuncio.prezzo;
+
+
+
     document.querySelector("#marketplace").value = annuncio.marketplace;
+
+
+
+}
+
+
+
+
+
+
+
+
+function generaTitoloAI(prodotto) {
+
+
+    let titolo = prodotto.trim();
+
+
+
+    titolo = ottimizzaTitoloSEO(titolo);
+
+
+
+    return titolo;
+
+
+}
+
+
+
+
+
+
+
+
+function ottimizzaTitoloSEO(titolo) {
+
+
+
+    titolo = titolo.replace(
+        "Scarpe",
+        "Sneakers"
+    );
+
+
+
+    titolo = titolo.replace(
+        "scarpe",
+        "sneakers"
+    );
+
+
+
+
+    if (!titolo.toLowerCase().includes("original")) {
+
+
+
+        titolo += " Originali";
+
+
+
+    }
+
+
+
+
+    return titolo;
+
+
 
 }
