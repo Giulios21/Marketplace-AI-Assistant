@@ -1,6 +1,6 @@
 let ultimoAnnuncio = "";
 
-function generaAnnuncio() {
+ async function generaAnnuncio() {
 
     let prodotto = document.querySelector("#prodotto").value.trim();
     let descrizione = document.querySelector("#descrizione").value.trim();
@@ -54,43 +54,35 @@ function generaAnnuncio() {
     punteggioAI = Math.min(punteggioAI, 10);
 
 
+// GENERAZIONE TITOLO
 
-    // GENERAZIONE TITOLO
+let rispostaAI = await fetch("http://localhost:3000/genera", {
 
-    titolo = generaTitoloAI(prodotto);
+    method: "POST",
 
+    headers: {
+        "Content-Type": "application/json"
+    },
 
+    body: JSON.stringify({
+        prodotto: prodotto,
+        descrizione: descrizione,
+        marketplace: marketplace
+    })
 
-    // GENERAZIONE ANNUNCIO IN BASE AL MARKETPLACE
-
-    if (marketplace === "vinted") {
-
-        testoGenerato = generaVinted(
-            titolo,
-            descrizione,
-            prodotto
-        );
-
-
-    } else if (marketplace === "subito") {
-
-        testoGenerato = generaSubito(
-            titolo,
-            descrizione,
-            prodotto
-        );
+});
 
 
-    } else {
+let datiAI = await rispostaAI.json();
 
-        testoGenerato = generaEbay(
-            titolo,
-            descrizione,
-            prodotto
-        );
 
-    }
+titolo = datiAI.titolo;
 
+testoGenerato = datiAI.descrizione;
+
+
+console.log("TITOLO AI:", titolo);
+console.log("DESCRIZIONE AI:", testoGenerato);
 
 
     ultimoAnnuncio = testoGenerato;
@@ -753,3 +745,8 @@ function ottimizzaTitoloSEO(titolo) {
 
 
 }
+
+
+
+
+
