@@ -14,6 +14,7 @@ let ultimoAnnuncio = "";
 
     let punteggioAI = 0;
     let suggerimentiAI = [];
+    document.querySelector("#loadingAI").style.display = "block";
 
 
     // ANALISI AI
@@ -105,7 +106,7 @@ console.log("DESCRIZIONE:", testoGenerato);
         titolo,
         testoGenerato
     );
-
+  document.querySelector("#loadingAI").style.display = "block";
 
 
 
