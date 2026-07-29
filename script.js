@@ -14,7 +14,6 @@ let ultimoAnnuncio = "";
 
     let punteggioAI = 0;
     let suggerimentiAI = [];
-    document.querySelector("#loadingAI").style.display = "block";
 
 
     // ANALISI AI
@@ -57,39 +56,45 @@ let ultimoAnnuncio = "";
 
 // GENERAZIONE TITOLO
 
-let rispostaAI = await fetch("http://localhost:3000/genera", {
-
-    method: "POST",
-
-    headers: {
-        "Content-Type": "application/json"
-    },
-
-    body: JSON.stringify({
-        prodotto: prodotto,
-        descrizione: descrizione,
-        marketplace: marketplace
-    })
-
-});
+titolo = generaTitoloAI(prodotto);
 
 
-let datiAI = await rispostaAI.json();
+// GENERAZIONE ANNUNCIO IN BASE AL MARKETPLACE
+
+if (marketplace === "vinted") {
+
+    testoGenerato = generaVinted(
+        titolo,
+        descrizione,
+        prodotto
+    );
 
 
-titolo = datiAI.titolo;
+} else if (marketplace === "subito") {
 
-testoGenerato = datiAI.descrizione;
+    testoGenerato = generaSubito(
+        titolo,
+        descrizione,
+        prodotto
+    );
 
 
-console.log("TITOLO AI:", titolo);
-console.log("DESCRIZIONE AI:", testoGenerato);
+} else {
+
+    testoGenerato = generaEbay(
+        titolo,
+        descrizione,
+        prodotto
+    );
+
+}
+
+
+console.log("TITOLO:", titolo);
+console.log("DESCRIZIONE:", testoGenerato);
 
 
     ultimoAnnuncio = testoGenerato;
-    
-  
-
 
 
 
@@ -100,8 +105,6 @@ console.log("DESCRIZIONE AI:", testoGenerato);
         titolo,
         testoGenerato
     );
-
-    document.querySelector("#loadingAI").style.display = "none";
 
 
 
