@@ -422,3 +422,25 @@ select:focus {
         background-position: 0% 50%;
     }
 }
+
+.tecnologia-ai {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 15px;
+    border: 1px solid #ddd6fe;
+    text-align: center;
+    width: 99%;
+    box-sizing: border-box;
+    margin-left: -15px;
+}
+
+.tecnologia-ai h2 {
+    margin-bottom: 10px;
+    color: #4f46e5;
+}
+
+.tecnologia-ai p {
+    margin: 0;
+    line-height: 1.5;
+}
