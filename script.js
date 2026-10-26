@@ -57,45 +57,39 @@ let ultimoAnnuncio = "";
 
 // GENERAZIONE TITOLO
 
-titolo = generaTitoloAI(prodotto);
+let rispostaAI = await fetch("http://localhost:3000/genera", {
+
+    method: "POST",
+
+    headers: {
+        "Content-Type": "application/json"
+    },
+
+    body: JSON.stringify({
+        prodotto: prodotto,
+        descrizione: descrizione,
+        marketplace: marketplace
+    })
+
+});
 
 
-// GENERAZIONE ANNUNCIO IN BASE AL MARKETPLACE
-
-if (marketplace === "vinted") {
-
-    testoGenerato = generaVinted(
-        titolo,
-        descrizione,
-        prodotto
-    );
+let datiAI = await rispostaAI.json();
 
 
-} else if (marketplace === "subito") {
+titolo = datiAI.titolo;
 
-    testoGenerato = generaSubito(
-        titolo,
-        descrizione,
-        prodotto
-    );
+testoGenerato = datiAI.descrizione;
 
 
-} else {
-
-    testoGenerato = generaEbay(
-        titolo,
-        descrizione,
-        prodotto
-    );
-
-}
-
-
-console.log("TITOLO:", titolo);
-console.log("DESCRIZIONE:", testoGenerato);
+console.log("TITOLO AI:", titolo);
+console.log("DESCRIZIONE AI:", testoGenerato);
 
 
     ultimoAnnuncio = testoGenerato;
+    
+  
+
 
 
 
@@ -106,124 +100,85 @@ console.log("DESCRIZIONE:", testoGenerato);
         titolo,
         testoGenerato
     );
-  document.querySelector("#loadingAI").style.display = "block";
 
-
-
-    let risultato = `
-
-<div class="scheda-annuncio">
-
-
-<h2>✨ Anteprima Annuncio</h2>
-
-
-
-${foto > 0 ? `
-
-<div class="foto-annuncio">
-
-<img src="${URL.createObjectURL(fotoInputAnnuncio.files[0])}">
-
-</div>
-
-` : ""}
-
-
-
-
-<h3>📦 Titolo</h3>
-
-
-<div class="campo-output">
-
-<p id="titoloAnnuncio">${titolo}</p>
-
-
-<button onclick="copiaTesto('#titoloAnnuncio')">
-
-📋 Copia Titolo
-
-</button>
-
-
-</div>
-
-
-
-
-<h3>📝 Descrizione</h3>
-
-
-<div class="campo-output">
-
-<p id="testoAnnuncio">${testoGenerato}</p>
-
-
-<button onclick="copiaTesto('#testoAnnuncio')">
-
-📋 Copia Descrizione
-
-</button>
-
-
-</div>
-
-
-
-
-<button onclick="copiaAnnuncioCompleto()">
-
-🚀 Copia Annuncio Completo
-
-</button>
-
-
-
-</div>
-
-
-
-
-
-<div class="analisi-ai">
-
-<p>
-
-<strong>Punteggio:</strong> ${punteggioAI}/10 ⭐
-
-</p>
-
-
-
-<ul>
-
-<li>✅ Titolo generato</li>
-
-<li>✅ Annuncio ottimizzato</li>
-
-
-<li>
-
-${suggerimentiAI.length > 0
-
-? suggerimentiAI.map(s => "⚠️ " + s).join("<br>")
-
-: "✅ Annuncio completo, ottimo lavoro!"}
-
-</li>
-
-
-</ul>
-
-
-</div>
-
-`;
-
-
-
-document.querySelector("#risultato").innerHTML = risultato;
+    document.querySelector("#loadingAI").style.display = "none";
+
+
+
+
+    const risultato = document.querySelector("#risultato");
+    risultato.replaceChildren();
+
+    const scheda = document.createElement("div");
+    scheda.className = "scheda-annuncio";
+    const intestazione = document.createElement("h2");
+    intestazione.textContent = "✨ Anteprima Annuncio";
+    scheda.appendChild(intestazione);
+
+    if (foto > 0) {
+        const contenitoreFoto = document.createElement("div");
+        contenitoreFoto.className = "foto-annuncio";
+        const immagine = document.createElement("img");
+        immagine.src = URL.createObjectURL(fotoInputAnnuncio.files[0]);
+        contenitoreFoto.appendChild(immagine);
+        scheda.appendChild(contenitoreFoto);
+    }
+
+    const titoloIntestazione = document.createElement("h3");
+    titoloIntestazione.textContent = "📦 Titolo";
+    const campoTitolo = document.createElement("div");
+    campoTitolo.className = "campo-output";
+    const titoloOutput = document.createElement("p");
+    titoloOutput.id = "titoloAnnuncio";
+    titoloOutput.textContent = titolo;
+    const copiaTitolo = document.createElement("button");
+    copiaTitolo.textContent = "📋 Copia Titolo";
+    copiaTitolo.addEventListener("click", () => copiaTesto("#titoloAnnuncio"));
+    campoTitolo.append(titoloOutput, copiaTitolo);
+    scheda.append(titoloIntestazione, campoTitolo);
+
+    const descrizioneIntestazione = document.createElement("h3");
+    descrizioneIntestazione.textContent = "📝 Descrizione";
+    const campoDescrizione = document.createElement("div");
+    campoDescrizione.className = "campo-output";
+    const descrizioneOutput = document.createElement("p");
+    descrizioneOutput.id = "testoAnnuncio";
+    descrizioneOutput.textContent = testoGenerato;
+    const copiaDescrizione = document.createElement("button");
+    copiaDescrizione.textContent = "📋 Copia Descrizione";
+    copiaDescrizione.addEventListener("click", () => copiaTesto("#testoAnnuncio"));
+    campoDescrizione.append(descrizioneOutput, copiaDescrizione);
+    scheda.append(descrizioneIntestazione, campoDescrizione);
+
+    const copiaCompleto = document.createElement("button");
+    copiaCompleto.textContent = "🚀 Copia Annuncio Completo";
+    copiaCompleto.addEventListener("click", copiaAnnuncioCompleto);
+    scheda.appendChild(copiaCompleto);
+
+    const analisi = document.createElement("div");
+    analisi.className = "analisi-ai";
+    const punteggio = document.createElement("p");
+    const etichettaPunteggio = document.createElement("strong");
+    etichettaPunteggio.textContent = "Punteggio:";
+    punteggio.append(etichettaPunteggio, ` ${punteggioAI}/10 ⭐`);
+    const lista = document.createElement("ul");
+    ["✅ Titolo generato", "✅ Annuncio ottimizzato"].forEach((testo) => {
+        const voce = document.createElement("li");
+        voce.textContent = testo;
+        lista.appendChild(voce);
+    });
+    const suggerimenti = document.createElement("li");
+    if (suggerimentiAI.length > 0) {
+        suggerimentiAI.forEach((suggerimento, indice) => {
+            if (indice > 0) suggerimenti.appendChild(document.createElement("br"));
+            suggerimenti.append(`⚠️ ${suggerimento}`);
+        });
+    } else {
+        suggerimenti.textContent = "✅ Annuncio completo, ottimo lavoro!";
+    }
+    lista.appendChild(suggerimenti);
+    analisi.append(punteggio, lista);
+    risultato.append(scheda, analisi);
 
 
 }
@@ -284,7 +239,7 @@ function mostraMessaggio() {
     let messaggio = document.createElement("div");
 
 
-    messaggio.innerHTML = "✅ Copiato negli appunti!";
+    messaggio.textContent = "✅ Copiato negli appunti!";
 
 
     messaggio.className = "messaggio-copia";
@@ -325,7 +280,7 @@ if (fotoInput) {
 
         if (!file) {
 
-            anteprima.innerHTML = "";
+            anteprima.replaceChildren();
 
             return;
 
@@ -337,8 +292,10 @@ if (fotoInput) {
 
         reader.onload = function(e) {
 
-            anteprima.innerHTML =
-            `<img src="${e.target.result}" alt="Anteprima prodotto">`;
+            const immagine = document.createElement("img");
+            immagine.src = e.target.result;
+            immagine.alt = "Anteprima prodotto";
+            anteprima.replaceChildren(immagine);
 
         };
 
@@ -559,7 +516,11 @@ function mostraCronologia() {
 
 
 
-    contenitore.innerHTML = "<h2>📚 Cronologia annunci</h2>";
+    contenitore.replaceChildren();
+
+    const intestazione = document.createElement("h2");
+    intestazione.textContent = "📚 Cronologia annunci";
+    contenitore.appendChild(intestazione);
 
 
 
@@ -568,46 +529,26 @@ function mostraCronologia() {
 
 
 
-        contenitore.innerHTML += `
+        const campo = document.createElement("div");
+        campo.className = "campo-output";
 
+        const titolo = document.createElement("h3");
+        titolo.textContent = annuncio.titolo;
+        const marketplace = document.createElement("p");
+        marketplace.textContent = annuncio.marketplace;
+        const data = document.createElement("small");
+        data.textContent = annuncio.data;
 
-<div class="campo-output">
+        const ricarica = document.createElement("button");
+        ricarica.textContent = "🔄 Ricarica";
+        ricarica.addEventListener("click", () => ricaricaAnnuncio(annunci.length - 1 - index));
 
+        const elimina = document.createElement("button");
+        elimina.textContent = "🗑️ Elimina";
+        elimina.addEventListener("click", () => eliminaAnnuncio(annunci.length - 1 - index));
 
-<h3>${annuncio.titolo}</h3>
-
-
-<p>${annuncio.marketplace}</p>
-
-
-<small>${annuncio.data}</small>
-
-
-<br><br>
-
-
-
-<button onclick="ricaricaAnnuncio(${annunci.length - 1 - index})">
-
-🔄 Ricarica
-
-</button>
-
-
-
-
-<button onclick="eliminaAnnuncio(${annunci.length - 1 - index})">
-
-🗑️ Elimina
-
-</button>
-
-
-
-</div>
-
-
-`;
+        campo.append(titolo, marketplace, data, document.createElement("br"), document.createElement("br"), ricarica, elimina);
+        contenitore.appendChild(campo);
 
 
 
@@ -755,8 +696,4 @@ function ottimizzaTitoloSEO(titolo) {
 
 
 }
-
-
-
-
 
